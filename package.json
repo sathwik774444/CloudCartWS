@@ -1,0 +1,17 @@
+{
+  "name": "ecommerce-mern",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "concurrently -n backend,frontend -c green,blue \"npm run dev --workspace backend\" \"npm start --workspace frontend\"",
+    "build": "npm run build --workspace frontend",
+    "start": "npm start --workspace backend"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

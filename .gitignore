@@ -1,0 +1,49 @@
+# ===============================
+# Node & Backend
+# ===============================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# ===============================
+# Logs
+# ===============================
+logs/
+*.log
+
+# ===============================
+# Build outputs
+# ===============================
+dist/
+build/
+
+# ===============================
+# Frontend (React)
+# ===============================
+client/node_modules/
+client/build/
+
+# ===============================
+# OS / Editor files
+# ===============================
+.DS_Store
+Thumbs.db
+
+# ===============================
+# IDE configs
+# ===============================
+.vscode/
+.idea/
+
+# ===============================
+# Coverage
+# ===============================
+coverage/
