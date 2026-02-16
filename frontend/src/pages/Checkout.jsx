@@ -80,11 +80,32 @@ export default function Checkout() {
     }
   };
 
+  const steps = [
+    { id: 0, label: 'Cart' },
+    { id: 1, label: 'Address' },
+    { id: 2, label: 'Payment' },
+    { id: 3, label: 'Confirm' },
+    { id: 4, label: 'Success' },
+  ];
+
   return (
     <div>
       <div className="page-title">
         <h2>Checkout</h2>
         <div className="muted">Step {step} of 4</div>
+      </div>
+
+      <div className="checkout-steps" aria-label="Checkout steps">
+        {steps.map((s) => {
+          const isDone = s.id < step;
+          const isActive = s.id === step;
+          return (
+            <div key={s.id} className={`checkout-step${isDone ? ' done' : ''}${isActive ? ' active' : ''}`}>
+              <div className="checkout-step-dot" aria-hidden="true" />
+              <div className="checkout-step-label">{s.label}</div>
+            </div>
+          );
+        })}
       </div>
 
       {disabled ? <div className="alert">Cart is empty. Add products before checkout.</div> : null}

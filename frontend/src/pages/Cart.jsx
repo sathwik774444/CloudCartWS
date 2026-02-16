@@ -44,29 +44,47 @@ export default function Cart() {
             ))}
           </div>
           <div className="summary">
-            <h3>Order Summary</h3>
-            <div className="row between">
-              <div className="muted">Items</div>
-              <div>{totals.count}</div>
+            <div className="summary-head">
+              <h3>Order Summary</h3>
+              <div className="badge">Secure checkout</div>
             </div>
-            <div className="row between">
-              <div className="muted">Subtotal</div>
-              <div>₹{totals.subtotal}</div>
+
+            <div className="summary-rows" aria-label="Price breakdown">
+              <div className="summary-row">
+                <div className="muted">Items</div>
+                <div className="summary-value">{totals.count}</div>
+              </div>
+              <div className="summary-row">
+                <div className="muted">Subtotal</div>
+                <div className="summary-value">₹{totals.subtotal}</div>
+              </div>
+              <div className="summary-row">
+                <div className="muted">Shipping</div>
+                <div className="summary-value muted">Calculated at checkout</div>
+              </div>
+              <div className="summary-divider" aria-hidden="true" />
+              <div className="summary-row summary-total">
+                <div>Total</div>
+                <div className="summary-value">₹{totals.subtotal}</div>
+              </div>
             </div>
-            <div className="muted small">Shipping and taxes are calculated at checkout.</div>
-            <button
-              className="btn"
-              type="button"
-              onClick={() => {
-                if (!user) {
-                  navigate('/login');
-                } else {
-                  navigate('/checkout');
-                }
-              }}
-            >
-              Proceed to checkout
-            </button>
+
+            <div className="summary-foot">
+              <div className="muted small">Taxes, shipping and discounts (if any) will be applied at checkout.</div>
+              <button
+                className="btn summary-cta"
+                type="button"
+                onClick={() => {
+                  if (!user) {
+                    navigate('/login');
+                  } else {
+                    navigate('/checkout');
+                  }
+                }}
+              >
+                Proceed to checkout
+              </button>
+            </div>
           </div>
         </div>
       )}

@@ -10,7 +10,7 @@ export default function Help() {
         <h2>Help & Support</h2>
       </div>
 
-      <div className="grid-2">
+      <div className="help-layout">
         <div className="panel">
           <h3>FAQs</h3>
           <div className="faq">
@@ -31,16 +31,8 @@ export default function Help() {
           <h3>Contact</h3>
           {sent ? <div className="alert success">Message captured. Support will respond soon.</div> : null}
           <div className="form">
-            <input
-              placeholder="Name"
-              value={form.name}
-              onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-            />
-            <input
-              placeholder="Email"
-              value={form.email}
-              onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
-            />
+            <input placeholder="Name" value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} />
+            <input placeholder="Email" value={form.email} onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))} />
             <textarea
               placeholder="How can we help?"
               rows={5}

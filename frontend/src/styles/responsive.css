@@ -3,11 +3,28 @@
     grid-template-columns: repeat(2, 1fr);
   }
 
+  .auth-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-title {
+    font-size: 30px;
+  }
+
+  .hero-metrics {
+    grid-template-columns: 1fr;
+  }
+
   .details,
   .cart-layout,
   .checkout,
   .grid-2 {
     grid-template-columns: 1fr;
+  }
+
+  .summary {
+    position: static;
+    top: auto;
   }
 
   .thead,
@@ -18,11 +35,33 @@
   .search {
     display: none;
   }
+
+  .nav-actions {
+    display: none;
+  }
+
+  .nav-toggle {
+    display: inline-flex;
+  }
+
+  .home-toolbar .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .results {
+    justify-content: space-between;
+  }
 }
 
 @media (max-width: 560px) {
   .navbar-inner {
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+  }
+
+  .navbar-left {
+    flex: 1;
   }
 
   .grid {
@@ -30,11 +69,6 @@
   }
 
   .cart-item {
-    grid-template-columns: 70px 1fr;
-  }
-
-  .cart-total {
-    grid-column: 2;
-    text-align: left;
+    grid-template-columns: 80px 1fr;
   }
 }

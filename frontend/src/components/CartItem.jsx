@@ -10,24 +10,32 @@ export default function CartItem({ item, onDec, onInc, onRemove }) {
         alt={item.title}
       />
       <div className="cart-info">
-        <Link className="cart-title" to={`/products/${item.product}`}>
-          {item.title}
-        </Link>
-        <div className="muted">₹{item.price} each</div>
-        <div className="row gap">
-          <button className="btn btn-ghost" type="button" onClick={onDec}>
-            -
-          </button>
-          <div className="qty">{item.qty}</div>
-          <button className="btn btn-ghost" type="button" onClick={onInc}>
-            +
-          </button>
-          <button className="btn btn-danger" type="button" onClick={onRemove}>
+        <div className="cart-top">
+          <div>
+            <Link className="cart-title" to={`/products/${item.product}`}>
+              {item.title}
+            </Link>
+            <div className="muted small">₹{item.price} each</div>
+          </div>
+          <div className="cart-total">₹{item.price * item.qty}</div>
+        </div>
+
+        <div className="cart-actions">
+          <div className="qty-control" aria-label="Quantity">
+            <button className="qty-btn" type="button" onClick={onDec} aria-label="Decrease quantity">
+              −
+            </button>
+            <div className="qty">{item.qty}</div>
+            <button className="qty-btn" type="button" onClick={onInc} aria-label="Increase quantity">
+              +
+            </button>
+          </div>
+
+          <button className="btn btn-ghost btn-danger-outline" type="button" onClick={onRemove}>
             Remove
           </button>
         </div>
       </div>
-      <div className="cart-total">₹{item.price * item.qty}</div>
     </div>
   );
 }

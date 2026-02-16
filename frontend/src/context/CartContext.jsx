@@ -9,6 +9,7 @@ export function CartProvider({ children }) {
   const { user } = useAuth();
   const [cart, setCart] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [toast, setToast] = useState({ message: '', type: 'success' });
 
   const refresh = useCallback(async () => {
     if (!user) {
@@ -29,9 +30,16 @@ export function CartProvider({ children }) {
     refresh();
   }, [refresh]);
 
+  useEffect(() => {
+    if (!toast?.message) return;
+    const t = setTimeout(() => setToast({ message: '', type: toast.type || 'success' }), 2200);
+    return () => clearTimeout(t);
+  }, [toast]);
+
   const add = useCallback(async (productId, qty) => {
     const data = await cartService.addToCart({ productId, qty });
     setCart(data.cart);
+    setToast({ message: 'Added to cart', type: 'success' });
   }, []);
 
   const updateQty = useCallback(async (productId, qty) => {
@@ -56,8 +64,8 @@ export function CartProvider({ children }) {
   }, [cart]);
 
   const value = useMemo(
-    () => ({ cart, loading, refresh, add, updateQty, remove, clear, totals }),
-    [cart, loading, refresh, add, updateQty, remove, clear, totals]
+    () => ({ cart, loading, toast, refresh, add, updateQty, remove, clear, totals }),
+    [cart, loading, toast, refresh, add, updateQty, remove, clear, totals]
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

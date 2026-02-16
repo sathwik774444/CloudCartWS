@@ -15,6 +15,8 @@ import Profile from './pages/Profile.jsx';
 import Help from './pages/Help.jsx';
 import AdminDashboard from './pages/AdminDashboard.jsx';
 
+import CartToast from './components/CartToast.jsx';
+
 import { AuthProvider } from './context/AuthContext.jsx';
 import { CartProvider } from './context/CartContext.jsx';
 import ProtectedRoute from './routes/ProtectedRoute.jsx';
@@ -26,6 +28,7 @@ export default function App() {
         <CartProvider>
           <div className="app-shell">
             <Navbar />
+            <CartToast />
             <main className="container">
               <Routes>
                 <Route path="/" element={<Home />} />
