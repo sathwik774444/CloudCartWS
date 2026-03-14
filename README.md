@@ -1,88 +1,195 @@
-# Ecommerce MERN (CloudCart)
+# CloudCart E-commerce Platform
 
-## Features
+A modern, full-stack e-commerce application built with React and Node.js.
 
-- JWT auth with role-based access (user/admin)
-- Product browsing with search, filter, sort, pagination
-- Cart persistence (MongoDB)
-- Checkout flow: address -> payment intent -> confirmation
-- Orders: history + admin management
-- Inventory updates on payment confirmation
-- Email hook for order confirmations (SMTP optional)
+## 🚀 Features
 
-## Tech
+- **User Management**: JWT authentication with role-based access (user/admin)
+- **Product Catalog**: Advanced search, filtering, sorting, and pagination
+- **Shopping Cart**: Persistent cart with real-time updates
+- **Order Management**: Complete checkout flow with order history
+- **Payment Integration**: Stripe payment processing
+- **Admin Dashboard**: Product and order management
+- **Email Notifications**: Order confirmations and updates
+- **File Uploads**: Cloudinary integration for product images
 
-- Backend: Node.js, Express, MongoDB (Mongoose), JWT, Zod, Stripe
-- Frontend: React (CRA), react-router-dom, axios
+## 🏗️ Architecture
 
-## Project Structure
+### Frontend (React)
+- React 18 with modern hooks
+- React Router for navigation
+- Axios for API communication
+- Responsive design
 
-- `backend/` REST API
-- `frontend/` React UI
+### Backend (Node.js)
+- Express.js REST API
+- MongoDB with Mongoose ODM
+- JWT authentication
+- Stripe payment processing
+- Cloudinary file uploads
+- Comprehensive error handling
 
-## Environment Variables
+## 📦 Tech Stack
 
-Create `Ecommerce-MERN/.env` (backend reads process env) using `.env.example` as reference.
+### Frontend
+- React 18
+- React Router DOM
+- Axios
 
-Minimum required for backend:
+### Backend
+- Node.js 18+
+- Express.js
+- MongoDB (Mongoose)
+- JWT
+- Stripe
+- Multer (file uploads)
 
-- `MONGO_URI`
-- `JWT_SECRET`
+## 🚀 Quick Start
 
-Optional:
+### Prerequisites
+- Node.js 18+
+- MongoDB (local or Atlas)
 
-- `STRIPE_SECRET_KEY`
-- SMTP vars for emails
+### Local Development
 
-Frontend optional:
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/your-username/cloudcart.git
+   cd cloudcart
+   ```
 
-- `REACT_APP_API_URL` (defaults to `http://localhost:5000/api`)
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-## Setup (Local)
+3. **Set up environment variables**
+   ```bash
+   # Backend
+   cp backend/.env.example backend/.env
+   # Edit backend/.env with your configuration
+   
+   # Frontend
+   cp frontend/.env.example frontend/.env.local
+   # Edit frontend/.env.local with your configuration
+   ```
 
-### 1) Install dependencies
+4. **Start MongoDB**
+   ```bash
+   # Using Docker
+   docker-compose up -d mongo
+   
+   # Or use your local MongoDB instance
+   ```
 
-From `Ecommerce-MERN/`:
+5. **Seed sample data (optional)**
+   ```bash
+   npm run seed
+   ```
 
-- `npm install`
+6. **Run the application**
+   ```bash
+   npm run dev
+   ```
 
-This installs workspace deps for both `backend` and `frontend`.
+   - Frontend: http://localhost:3000
+   - Backend: http://localhost:5000/api/health
 
-### 2) Start MongoDB
+## 📁 Project Structure
 
-Use your local MongoDB instance OR docker-compose.
+```
+cloudcart/
+├── backend/                 # Node.js API
+│   ├── config/             # Configuration files
+│   ├── controllers/        # Route controllers
+│   ├── middleware/         # Express middleware
+│   ├── models/            # MongoDB models
+│   ├── routes/            # API routes
+│   ├── utils/             # Utility functions
+│   └── package.json       # Backend dependencies
+├── frontend/               # React application
+│   ├── public/            # Static assets
+│   ├── src/               # React components
+│   │   ├── components/    # Reusable components
+│   │   ├── pages/         # Page components
+│   │   ├── hooks/         # Custom hooks
+│   │   └── utils/         # Utility functions
+│   └── package.json       # Frontend dependencies
+├── docker-compose.yml     # Local development
+├── package.json           # Workspace configuration
+└── README.md             # This file
+```
 
-### 3) Seed sample data (optional)
+## 🔧 Configuration
 
-From `Ecommerce-MERN/`:
+### Environment Variables
 
-- `npm run seed --workspace backend`
+#### Backend (.env)
+```bash
+NODE_ENV=development
+PORT=5000
+MONGO_URI=mongodb://127.0.0.1:27017/ecommerce_mern
+JWT_SECRET=your-super-secret-key
+JWT_EXPIRES_IN=7d
+CORS_ORIGIN=http://localhost:3000
 
-Creates an admin user:
+# Stripe
+STRIPE_SECRET_KEY=sk_test_...
+STRIPE_WEBHOOK_SECRET=
 
-- Email: `admin@shop.local`
-- Password: `Admin@123`
+# Email (optional)
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your-email@gmail.com
+SMTP_PASS=your-app-password
+EMAIL_FROM=no-reply@your-domain.com
+```
 
-### 4) Run the app
+#### Frontend (.env.local)
+```bash
+REACT_APP_API_URL=http://localhost:5000/api
+REACT_APP_STRIPE_PUBLISHABLE_KEY=pk_test_...
+REACT_APP_ENVIRONMENT=development
+```
 
-From `Ecommerce-MERN/`:
+## 🧪 Testing
 
-- `npm run dev`
+```bash
+# Run all tests
+npm test
 
-- Backend: `http://localhost:5000/api/health`
-- Frontend: `http://localhost:3000`
+# Run backend tests
+npm run test:backend
 
-## Key API Routes
+# Run frontend tests
+npm run test:frontend
+```
 
-- `POST /api/auth/register`
-- `POST /api/auth/login`
-- `GET /api/products`
-- `GET /api/products/:id`
-- `GET /api/cart` (auth)
-- `POST /api/orders` (auth) -> creates order from cart
-- `POST /api/payments/intent` (auth) -> Stripe PaymentIntent
-- `POST /api/payments/confirm-mock` (auth) -> local dev confirmation
+##  Payment Integration
 
-## Notes
+### Stripe
+- Payment Intents API
+- Webhook handling
+- Refund processing
+- Test mode support
 
-- Payments: for production, you should confirm payment via Stripe webhooks. The project includes a local `confirm-mock` endpoint to simulate the flow while developing.
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 📞 Support
+
+For support and questions:
+- Create an issue in GitHub
+
+---
+
+**Built with ❤️ for modern e-commerce**
