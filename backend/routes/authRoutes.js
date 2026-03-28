@@ -1,10 +1,19 @@
 import express from 'express';
 import { z } from 'zod';
 
-import { login, register } from '../controllers/authController.js';
+import { login, register, googleAuthCallback } from '../controllers/authController.js';
 import { validate } from '../utils/validators.js';
+import { passport } from '../config/passport.js';
 
 const router = express.Router();
+
+router.get('/google', passport.authenticate('google'));
+
+router.get(
+  '/google/callback',
+  passport.authenticate('google', { session: false, failureRedirect: `${process.env.CORS_ORIGIN}/login` }),
+  googleAuthCallback
+);
 
 router.post(
   '/register',

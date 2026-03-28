@@ -2,6 +2,17 @@ import { User } from '../models/User.js';
 import { generateToken } from '../utils/generateToken.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 
+export const googleAuthCallback = asyncHandler(async (req, res) => {
+  const token = generateToken({ id: req.user._id });
+  
+  res.redirect(`${process.env.CORS_ORIGIN}/auth/success?token=${token}&user=${encodeURIComponent(JSON.stringify({
+    id: req.user._id,
+    name: req.user.name,
+    email: req.user.email,
+    role: req.user.role,
+  }))}`);
+});
+
 export const register = asyncHandler(async (req, res) => {
   const { name, email, password } = req.validated.body;
 

@@ -3,9 +3,12 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import rateLimit from 'express-rate-limit';
+import session from 'express-session';
+import { MongoStore } from 'connect-mongo';
 
 import { env } from './config/env.js';
 import { errorMiddleware, notFoundMiddleware } from './middleware/errorMiddleware.js';
+import { passport } from './config/passport.js';
 
 import authRoutes from './routes/authRoutes.js';
 import productRoutes from './routes/productRoutes.js';
@@ -41,6 +44,25 @@ app.use(
     legacyHeaders: false,
   })
 );
+
+app.use(
+  session({
+    secret: env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: env.NODE_ENV === 'production',
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000,
+    },
+    store: MongoStore.create({
+      mongoUrl: env.MONGO_URI,
+    }),
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.get('/health', (req, res) => {
   res.status(200).send("ok");

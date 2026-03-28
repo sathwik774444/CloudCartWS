@@ -4,7 +4,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 
 export default function Login() {
-  const { login } = useAuth();
+  const { login, loginWithGoogle } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -69,6 +69,15 @@ export default function Login() {
               Login
             </button>
           </form>
+
+          <div className="auth-divider">
+            <span className="muted small">or</span>
+          </div>
+
+          <button className="btn btn-google" onClick={loginWithGoogle} type="button">
+            <span className="google-icon">🔗</span>
+            Continue with Google
+          </button>
 
           <div className="auth-foot">
             <div className="muted small">
