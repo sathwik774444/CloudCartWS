@@ -53,6 +53,11 @@
   .results {
     justify-content: space-between;
   }
+
+  .footer-content {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
 }
 
 @media (max-width: 560px) {
@@ -70,5 +75,10 @@
 
   .cart-item {
     grid-template-columns: 80px 1fr;
+  }
+
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
 }

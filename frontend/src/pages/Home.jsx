@@ -45,10 +45,24 @@ export default function Home() {
     })();
   }, [query]);
 
+  useEffect(() => {
+    const currentPage = Number(params.get('page') || 1);
+    if (currentPage > 1) {
+      const toolbarSection = document.getElementById('toolbar');
+      if (toolbarSection) {
+        toolbarSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, [params]);
+
   const setPage = (page) => {
     const next = new URLSearchParams(params);
     next.set('page', String(page));
     setParams(next);
+    const toolbarSection = document.getElementById('toolbar');
+    if (toolbarSection) {
+      toolbarSection.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   const total = data?.total || 0;
@@ -112,7 +126,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="home-toolbar" aria-label="Filters">
+      <section id="toolbar" className="home-toolbar" aria-label="Filters">
         <div className="toolbar">
           <div className="row gap">
             <select

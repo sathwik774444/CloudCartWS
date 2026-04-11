@@ -70,15 +70,36 @@ export default function Register() {
           <div className="muted auth-side-text">Join to save your cart, manage orders, and get a smoother checkout.</div>
           <div className="auth-side-points">
             <div className="auth-point">
-              <div className="auth-point-title">Personal profile</div>
-              <div className="muted small">Address details ready for checkout.</div>
+              <div className="auth-point-icon">👤</div>
+              <div className="auth-point-content">
+                <div className="auth-point-title">Personal profile</div>
+                <div className="muted small">Address details ready for checkout.</div>
+              </div>
             </div>
             <div className="auth-point">
-              <div className="auth-point-title">Order history</div>
-              <div className="muted small">Track purchases and delivery updates.</div>
+              <div className="auth-point-icon">📦</div>
+              <div className="auth-point-content">
+                <div className="auth-point-title">Order history</div>
+                <div className="muted small">Track purchases and delivery updates.</div>
+              </div>
+            </div>
+            <div className="auth-point">
+              <div className="auth-point-icon">💳</div>
+              <div className="auth-point-content">
+                <div className="auth-point-title">Secure payments</div>
+                <div className="muted small">Save payment methods for faster checkout.</div>
+              </div>
+            </div>
+                        <div className="auth-point">
+              <div className="auth-point-icon">⭐</div>
+              <div className="auth-point-content">
+                <div className="auth-point-title">Wishlist</div>
+                <div className="muted small">Save items for later and get notified.</div>
+              </div>
             </div>
           </div>
-        </div>
+          
+                  </div>
 
         <div className="panel auth-card">
           <div className="auth-card-head">
