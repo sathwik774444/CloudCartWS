@@ -11,7 +11,7 @@ router.get('/google', passport.authenticate('google'));
 
 router.get(
   '/google/callback',
-  passport.authenticate('google', { session: false, failureRedirect: `${process.env.CORS_ORIGIN}/login` }),
+  passport.authenticate('google', { session: false, failureRedirect: `${process.env.NODE_ENV === 'production' ? 'https://cloudcart.sarxlabs.online' : 'http://localhost:3000'}/login` }),
   googleAuthCallback
 );
 

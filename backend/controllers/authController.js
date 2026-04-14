@@ -5,7 +5,11 @@ import { asyncHandler } from '../utils/asyncHandler.js';
 export const googleAuthCallback = asyncHandler(async (req, res) => {
   const token = generateToken({ id: req.user._id });
   
-  res.redirect(`${process.env.CORS_ORIGIN}/auth/success?token=${token}&user=${encodeURIComponent(JSON.stringify({
+  const origin = process.env.NODE_ENV === 'production' 
+    ? 'https://cloudcart.sarxlabs.online' 
+    : 'http://localhost:3000';
+  
+  res.redirect(`${origin}/auth/success?token=${token}&user=${encodeURIComponent(JSON.stringify({
     id: req.user._id,
     name: req.user.name,
     email: req.user.email,
