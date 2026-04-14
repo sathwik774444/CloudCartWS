@@ -4,7 +4,7 @@ const paymentSchema = new mongoose.Schema(
   {
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     order: { type: mongoose.Schema.Types.ObjectId, ref: 'Order', required: true, unique: true },
-    provider: { type: String, enum: ['stripe'], default: 'stripe' },
+    provider: { type: String, enum: ['stripe', 'cashfree'], default: 'stripe' },
     paymentIntentId: { type: String, required: true },
     amount: { type: Number, required: true, min: 0 },
     currency: { type: String, default: 'inr' },

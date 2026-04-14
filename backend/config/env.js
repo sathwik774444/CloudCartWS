@@ -16,10 +16,14 @@ export const env = {
   MONGO_URI: required('MONGO_URI'),
   JWT_SECRET: required('JWT_SECRET'),
   JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || '7d',
-  CORS_ORIGIN: process.env.CORS_ORIGIN || 'http://localhost:3000',
+  CORS_ORIGIN: process.env.CORS_ORIGIN || ['https://sarxlabs.online', 'https://cloudcart.sarxlabs.online','http://localhost:3000'],
 
   STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY || '',
   STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET || '',
+
+  CASHFREE_APP_ID: process.env.CASHFREE_APP_ID || '',
+  CASHFREE_SECRET_KEY: process.env.CASHFREE_SECRET_KEY || '',
+  CASHFREE_ENVIRONMENT: process.env.CASHFREE_ENVIRONMENT || 'sandbox',
 
   SMTP_HOST: process.env.SMTP_HOST || '',
   SMTP_PORT: Number(process.env.SMTP_PORT || 587),

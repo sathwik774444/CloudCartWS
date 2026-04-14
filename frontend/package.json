@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "@cashfreepayments/cashfree-js": "^1.0.7",
+    "@cashfreepayments/pg-react": "^1.0.3",
     "axios": "^1.7.7",
+    "cashfree-dropjs": "^1.1.5",
     "google-auth-library": "^10.6.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

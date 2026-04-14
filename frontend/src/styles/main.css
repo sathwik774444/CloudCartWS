@@ -869,6 +869,45 @@ textarea {
   margin: 10px 0;
 }
 
+.radio-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.radio-group:hover {
+  border-color: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.radio-group input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--primary);
+}
+
+.radio-group span {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.radio-group:has(input:checked) {
+  border-color: rgba(79, 70, 229, 0.45);
+  background: rgba(79, 70, 229, 0.14);
+}
+
+.cashfree-payment-container {
+  margin-top: 16px;
+  min-height: 400px;
+}
+
 .empty {
   border: 1px dashed var(--border);
   padding: 24px;

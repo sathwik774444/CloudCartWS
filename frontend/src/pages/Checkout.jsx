@@ -1,9 +1,10 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { useCart } from '../context/CartContext.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { createOrderFromCart } from '../services/orderService';
-import { confirmPaymentMock, createPaymentIntent } from '../services/paymentService';
+import { confirmPaymentMock, createPaymentIntent, createCashfreePaymentSession, verifyCashfreePayment } from '../services/paymentService';
+import CashfreePayment from '../components/CashfreePayment.jsx';
 
 export default function Checkout() {
   const { cart, totals, refresh: refreshCart } = useCart();
@@ -30,8 +31,14 @@ export default function Checkout() {
   const [order, setOrder] = useState(null);
   const [clientSecret, setClientSecret] = useState('');
   const [paymentIntentId, setPaymentIntentId] = useState('');
+  const [paymentSessionId, setPaymentSessionId] = useState('');
+  const [paymentProvider, setPaymentProvider] = useState('cashfree');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+
+  useEffect(() => {
+    setError('');
+  }, [paymentProvider]);
 
   const disabled = items.length === 0;
 
@@ -78,6 +85,53 @@ export default function Checkout() {
     } finally {
       setBusy(false);
     }
+  };
+
+  const startCashfreePayment = async () => {
+    setBusy(true);
+    setError('');
+    try {
+      const data = await createCashfreePaymentSession({ orderId: order._id });
+      setPaymentSessionId(data.paymentSessionId);
+      setOrder(prev => ({ ...prev, paymentSessionId: data.paymentSessionId }));
+      setStep(3);
+    } catch (e) {
+      setError(e?.response?.data?.message || e.message || 'Cashfree payment session creation failed');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const handleCashfreeSuccess = async (paymentData) => {
+    setBusy(true);
+    setError('');
+    try {
+      const data = await verifyCashfreePayment({ orderId: order._id });
+      setOrder(data.order);
+      await refreshCart();
+      setStep(4);
+    } catch (e) {
+      setError(e?.response?.data?.message || e.message || 'Payment verification failed');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const handleCashfreeError = (error) => {
+    let errorMessage = 'Payment failed. Please try again.';
+    
+    if (error?.message) {
+      if (error.message.includes('SDK not loaded')) {
+        errorMessage = 'Payment system loading error. Please refresh the page and try again.';
+      } else if (error.message.includes('session')) {
+        errorMessage = 'Payment session expired. Please restart the payment process.';
+      } else if (error.message.includes('network') || error.message.includes('fetch')) {
+        errorMessage = 'Network error. Please check your connection and try again.';
+      }
+    }
+    
+    setError(errorMessage);
+    console.error('Cashfree payment error:', error);
   };
 
   const steps = [
@@ -166,27 +220,19 @@ export default function Checkout() {
           {step === 2 ? (
             <>
               <h3>Payment</h3>
-              <div className="muted">Provider: Stripe</div>
-              <button className="btn" type="button" onClick={startPayment} disabled={busy}>
-                Create Payment Intent
+              <div className="muted">Provider: Cashfree</div>
+              <button className="btn" type="button" onClick={startCashfreePayment} disabled={busy}>
+                Create Cashfree Payment Session
               </button>
-              {clientSecret ? <div className="muted small">Client secret created.</div> : null}
+              {paymentSessionId ? <div className="muted small">Payment session created.</div> : null}
             </>
           ) : null}
 
           {step === 3 ? (
             <>
               <h3>Confirm</h3>
-              <div className="muted small">For local dev, this uses server endpoint `/payments/confirm-mock`.</div>
-              <div className="card pad">
-                <div className="row between">
-                  <div className="muted">PaymentIntent</div>
-                  <div className="mono">{paymentIntentId}</div>
-                </div>
-              </div>
-              <button className="btn" type="button" onClick={confirmMock} disabled={busy}>
-                Confirm payment (mock)
-              </button>
+              <div className="muted small">Complete your payment using Cashfree payment gateway.</div>
+              <CashfreePayment order={order} onSuccess={handleCashfreeSuccess} onError={handleCashfreeError} />
             </>
           ) : null}
 

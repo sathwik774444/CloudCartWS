@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 import { protect } from '../middleware/authMiddleware.js';
 import { validate, objectIdSchema } from '../utils/validators.js';
-import { confirmPaymentMock, createPaymentIntent } from '../controllers/paymentController.js';
+import { confirmPaymentMock, createPaymentIntent, createCashfreePaymentSession, verifyCashfreePayment } from '../controllers/paymentController.js';
 
 const router = express.Router();
 
@@ -31,6 +31,32 @@ router.post(
     })
   ),
   confirmPaymentMock
+);
+
+router.post(
+  '/cashfree/create-session',
+  protect,
+  validate(
+    z.object({
+      body: z.object({ orderId: objectIdSchema }),
+      query: z.any().optional(),
+      params: z.any().optional(),
+    })
+  ),
+  createCashfreePaymentSession
+);
+
+router.post(
+  '/cashfree/verify',
+  protect,
+  validate(
+    z.object({
+      body: z.object({ orderId: objectIdSchema }),
+      query: z.any().optional(),
+      params: z.any().optional(),
+    })
+  ),
+  verifyCashfreePayment
 );
 
 export default router;
