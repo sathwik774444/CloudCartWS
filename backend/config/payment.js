@@ -19,7 +19,7 @@ export function getCashfreeConfig() {
     headers: {
       'x-client-id': env.CASHFREE_APP_ID,
       'x-client-secret': env.CASHFREE_SECRET_KEY,
-      'x-api-version': '2022-09-01',
+      'x-api-version': '2023-08-01',
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },

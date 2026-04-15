@@ -91,17 +91,36 @@ export default function Checkout() {
     setBusy(true);
     setError('');
     try {
+      console.log('Creating Cashfree payment session for order:', order._id);
       const data = await createCashfreePaymentSession({ orderId: order._id });
+      console.log('Payment session response:', data);
+      
+      if (!data.paymentSessionId) {
+        console.error('No payment session ID in response:', data);
+        setError('Payment session creation failed - no session ID received');
+        return;
+      }
+      
       setPaymentSessionId(data.paymentSessionId);
       setOrder(prev => ({ ...prev, paymentSessionId: data.paymentSessionId }));
+      console.log('Payment session ID set:', data.paymentSessionId);
       setStep(3);
     } catch (e) {
-      setError(e?.response?.data?.message || e.message || 'Cashfree payment session creation failed');
+      console.error('Cashfree payment session creation error:', e);
+      const errorMessage = e?.response?.data?.message || e.message || 'Cashfree payment session creation failed';
+      
+      // If it's a 409 conflict, show retry option
+      if (e?.response?.status === 409 || errorMessage.includes('already exists')) {
+        setError(errorMessage + ' Click "Retry Payment" to try again.');
+      } else {
+        setError(errorMessage);
+      }
     } finally {
       setBusy(false);
     }
   };
 
+  
   const handleCashfreeSuccess = async (paymentData) => {
     setBusy(true);
     setError('');
@@ -123,15 +142,46 @@ export default function Checkout() {
     if (error?.message) {
       if (error.message.includes('SDK not loaded')) {
         errorMessage = 'Payment system loading error. Please refresh the page and try again.';
-      } else if (error.message.includes('session')) {
-        errorMessage = 'Payment session expired. Please restart the payment process.';
+      } else if (error.message.includes('payment_session_id') || error.message.includes('session')) {
+        errorMessage = 'Payment session is invalid or expired. Please restart the payment process.';
       } else if (error.message.includes('network') || error.message.includes('fetch')) {
         errorMessage = 'Network error. Please check your connection and try again.';
+      } else if (error.message.includes('payment_session_id is not present or is invalid')) {
+        errorMessage = 'Payment session is invalid. Please restart the payment process.';
       }
     }
     
     setError(errorMessage);
     console.error('Cashfree payment error:', error);
+  };
+
+  const testCashfreeConfig = async () => {
+    setBusy(true);
+    setError('');
+    try {
+      console.log('Testing Cashfree configuration...');
+      const response = await fetch('/api/payments/cashfree/test-config', {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      const data = await response.json();
+      console.log('Cashfree config test result:', data);
+      
+      if (data.success) {
+        alert(`✅ Cashfree configured successfully!\nEnvironment: ${data.config.environment}\nBase URL: ${data.config.baseUrl}`);
+      } else {
+        alert(`❌ Cashfree configuration failed!\nError: ${data.error}\nEnvironment Variables:\n- CASHFREE_APP_ID: ${data.envVars.CASHFREE_APP_ID}\n- CASHFREE_SECRET_KEY: ${data.envVars.CASHFREE_SECRET_KEY}\n- CASHFREE_ENVIRONMENT: ${data.envVars.CASHFREE_ENVIRONMENT}`);
+      }
+    } catch (e) {
+      console.error('Test config error:', e);
+      alert(`❌ Failed to test Cashfree configuration: ${e.message}`);
+    } finally {
+      setBusy(false);
+    }
   };
 
   const steps = [

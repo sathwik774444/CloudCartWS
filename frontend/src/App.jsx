@@ -15,6 +15,7 @@ import Orders from './pages/Orders.jsx';
 import Profile from './pages/Profile.jsx';
 import Help from './pages/Help.jsx';
 import AdminDashboard from './pages/AdminDashboard.jsx';
+import PaymentSuccess from './pages/PaymentSuccess.jsx';
 
 import CartToast from './components/CartToast.jsx';
 
@@ -36,6 +37,7 @@ export default function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/auth/success" element={<AuthSuccess />} />
+                <Route path="/payment/cashfree/success" element={<PaymentSuccess />} />
                 <Route path="/products/:id" element={<ProductDetails />} />
                 <Route path="/cart" element={<Cart />} />
 
